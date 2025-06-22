@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AZN - דוח מנהלים</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    img.logo {
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #005c99;
+    }
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    select, input {
+      margin: 10px;
+      padding: 6px;
+      border-radius: 6px;
+    }
+    input[type="date"] {
+      direction: ltr;
+    }
+    canvas {
+      max-width: 100%;
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    #logout {
+      background-color: #ff4d4d;
+      float: left;
+      font-size: 14px;
+      padding: 6px 14px;
+      margin: 0 0 10px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="logout">התנתק</button>
+    <img src="https://cdn.glitch.global/a6074e43-b9f0-4c21-91b7-1a4eb6629d76/ATSMON%20logo2.png?v=1748462841669" class="logo" alt="AZN Logo" />
+    <h2>דוח מנהלים</h2>
+
+    <div>
+      <label for="start-date">מתאריך</label>
+      <input type="date" id="start-date" pattern="\d{2}/\d{2}/\d{4}" />
+      <label for="end-date">עד תאריך</label>
+      <input type="date" id="end-date" pattern="\d{2}/\d{2}/\d{4}" />
+      <label for="type-filter">סוג פעולה</label>
+      <select id="type-filter">
+        <option value="">הכל</option>
+        <option value="ייצור">ייצור</option>
+        <option value="מכירה">מכירה</option>
+      </select>
+      <button id="filter-btn">טען דוח</button>
+    </div>
+
+    <canvas id="barChart"></canvas>
+    <canvas id="liveChart"></canvas>
+
+    <table>
+      <thead>
+        <tr>
+          <th>מוצר | מידה | צבע</th>
+          <th>סה"כ ייצור</th>
+          <th>סה"כ מכירה</th>
+          <th>מלאי נוכחי</th>
+        </tr>
+      </thead>
+      <tbody id="summary-body"></tbody>
+    </table>
+  </div>
+  <script>
+    document.getElementById("logout").addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "/";
+    });
+  </script>
+  <script src="/admin-stats.js"></script>
+</body>
+</html>
