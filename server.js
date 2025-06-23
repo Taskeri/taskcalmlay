@@ -14,7 +14,7 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-// ✅ שליפת משתמשים כולל מחלקה והרשאה (מתוקן ל־JSON תקני)
+// ✅ שליפת משתמשים כולל מחלקה והרשאה
 app.get("/users", async (req, res) => {
   try {
     const client = await auth.getClient();
@@ -36,7 +36,7 @@ app.get("/users", async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error("⚠️ שגיאה ב־/users:", error.response?.data || error.message || error);
-    res.status(500).json({ success: false, message: "שגיאה בשליפת משתמשים" });
+    res.status(500).send("שגיאה בשליפת משתמשים");
   }
 });
 
@@ -61,7 +61,7 @@ app.get("/products", async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error("⚠️ שגיאה ב־/products:", error.response?.data || error.message || error);
-    res.status(500).json({ success: false, message: "שגיאה בשליפת מוצרים" });
+    res.status(500).send("שגיאה בשליפת מוצרים");
   }
 });
 
@@ -74,7 +74,7 @@ app.post("/submit-report", async (req, res) => {
       date, time
     } = req.body;
 
-    // תאריך ושעה עם פורמט ישראלי dd/mm/yyyy
+    // אם התקבל תאריך מהלקוח – נשתמש בו. אחרת נחשב מחדש בפורמט dd/mm/yyyy
     const now = new Date();
     const dateStr = date || `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
     const timeStr = time || now.toLocaleTimeString("he-IL", { timeZone: "Asia/Jerusalem" });
